@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Lightbox</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="wrapper">
+    <h1>Super Simple Lightbox</h1>
+    <p>Our super simple lightbox demo. Here are the image links:
+    <ul>
+        <li>
+            <a href="https://cms-assets.tutsplus.com/uploads/users/48/posts/26615/image/Boostrap-card.jpg" class="lightbox_trigger">
+                Picture 1
+            </a>
+        </li>
+        <li>
+            <a href="https://cms-assets.tutsplus.com/uploads/users/48/posts/26615/image/Boostrap-card.jpg" class="lightbox_trigger">
+                Picture 2
+            </a>
+        </li>
+        <li>
+            <a href="https://cms-assets.tutsplus.com/uploads/users/48/posts/26615/image/Boostrap-card.jpg" class="lightbox_trigger">
+                Picture 3
+            </a>
+        </li>
+    </ul>
+    </p>
+</div> <!-- #/wrapper -->
+
+<!--<div id="lightbox">-->
+    <!--<p>Click to close</p>-->
+    <!--<div id="content">-->
+        <!--<img src="http://www.jacklmoore.com/colorbox/content/ohoopee3.jpg" />-->
+    <!--</div>-->
+<!--</div>-->
+
+
+
+<script src="https://code.jquery.com/jquery-1.6.2.min.js"></script>
+<script>
+    jQuery(document).ready(function($) {
+        $('#lightbox').live('click', function() {
+            $('#lightbox').hide();
+        });
+        $('.lightbox_trigger').click(function(e) {
+            e.preventDefault();
+            var image_href = $(this).attr("href");
+            if ($('#lightbox').length > 0) { // #lightbox exists
+
+                //insert img tag with clicked link's href as src value
+                $('#content').html('<img src="' + image_href + '" />');
+
+                //show lightbox window - you can use a transition here if you want, i.e. .show('fast')
+                $('#lightbox').show();
+            }
+            else { //#lightbox does not exist
+
+                //create HTML markup for lightbox window
+                var lightbox =
+                        '<div id="lightbox">' +
+                        '<p>Click to close</p>' +
+                        '<div id="content">' + //insert clicked link's href into img src
+                        '<img src="' + image_href +'" />' +
+                        '</div>' +
+                        '</div>';
+
+                //insert lightbox HTML into page
+                $('body').append(lightbox);
+            }
+        });
+    });
+
+    $(document).ready(function(){
+        $('#lightbox').live('DOMMouseScroll mousewheel', function(e){
+            var ratio = 0;
+            var img = $($(this).find('img')[0])
+            if(e.originalEvent.wheelDelta > 0 || e.originalEvent.detail < 0) {
+                var height = img.height();
+                var width = img.width();
+                ratio = height / width;
+                if(width > height) {
+                    img.css("height", height + 10* ratio);
+                    img.css("width", width + 10);
+                } else
+                {
+                    img.css("height", height + 10);
+                    img.css("width", width + 10* ratio);
+                }
+            }
+            else{
+                var height = img.height();
+                var width = img.width();
+                ratio = height / width;
+
+                if(width > height) {
+                    img.css("height", height - 10* ratio);
+                    img.css("width", width - 10);
+                } else
+                {
+                    img.css("height", height - 10);
+                    img.css("width", width - 10* ratio);
+                }
+            }
+        });
+    });
+</script>
+</body>
+
+</html>
